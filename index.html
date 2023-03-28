@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX</title>
+</head>
+<body onload="fn('ara')">
+    
+
+    <select id="Languages" onchange="fn(this.value)">
+        <option value="ara">Arabic</option>
+        <option value="eng">English</option>
+        <option value="ita">Italian</option>
+        <option value="spa">Spanish</option>
+    </select>
+
+    <label for="Languages" class="number"> </label>
+    <div class="container" 
+    style="
+    box-sizing: border-box;
+    padding:60px 20px ;
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20%;
+    gap: 5%;
+       "
+       ></div>
+
+    <script>
+        function fn (lang)
+        {
+            /*
+                ,  {
+                method: 'get',   // post get put delete
+                /* headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: 'foo=bar&lorem=ipsum' *\
+            }
+            */
+            document.querySelector(".container").innerHTML="";
+
+            fetch("https://restcountries.com/v3.1/lang/" + lang)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(json) {
+                console.log(json[1]);
+                document.querySelector(".number").innerHTML=json.length;
+                for(let i = 0; i<json.length; i++){
+                    oneCountry(json[i]);
+                }
+            })
+            .catch(function (error) {
+                console.log('Request failed', error);
+            });
+
+            function oneCountry(arr) {
+                document.querySelector(".container").innerHTML += "<div class = 'oneCountry'>" + "<img src ='" +arr.flags.svg + "' width='60%'> <br> " + arr.name.common + "</div>"
+            }
+        }
+
+   
+    </script>
+
+</body>
+</html>
